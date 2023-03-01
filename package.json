@@ -20,11 +20,20 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@nestjs/axios": "^2.0.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
+    "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^9.0.0",
+    "axios": "^1.3.4",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "@nestjs/mongoose": "^9.2.1",
+    "@nestjs/config": "^2.3.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.13.2",
+    "mongoose": "^6.9.0",
+    "nestjs-form-data": "^1.8.7"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
@@ -48,6 +57,14 @@
     "ts-node": "^10.0.0",
     "tsconfig-paths": "4.1.1",
     "typescript": "^4.7.4"
+  },
+  "_moduleAliases": {
+    "@app/*": "src/app",
+    "@config/*": "src/config",
+    "@/middleware/*": "src/middleware",
+    "@/providers/*": "src/providers",
+    "@/helpers/*": "src/helpers",
+    "@/public/*": "src/public"
   },
   "jest": {
     "moduleFileExtensions": [
