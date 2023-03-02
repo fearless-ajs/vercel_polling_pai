@@ -30,7 +30,7 @@ export class LgaController extends ApiResponse{
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateLgaDto: UpdateLgaDto,  @Res() res: Response) {
+  async update(@Param('id') id: string, @Body() updateLgaDto: UpdateLgaDto,  @Res() res: Response): Promise<any> {
     const response_data = await  this.lgaService.update(id, updateLgaDto);
     return this.successMessageWithData(response_data, 200, res);
   }

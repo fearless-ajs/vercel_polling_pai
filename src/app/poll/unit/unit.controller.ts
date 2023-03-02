@@ -1,34 +1,43 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, Res, Req} from '@nestjs/common';
 import { UnitService } from './unit.service';
 import { CreateUnitDto } from './dto/create-unit.dto';
 import { UpdateUnitDto } from './dto/update-unit.dto';
+import ApiResponse from "@/helpers/api_response";
+import {Request, Response} from "express";
 
-@Controller('unit')
-export class UnitController {
-  constructor(private readonly unitService: UnitService) {}
+@Controller('units')
+export class UnitController extends ApiResponse{
+  constructor(private readonly unitService: UnitService) {
+    super();
+  }
 
   @Post()
-  create(@Body() createUnitDto: CreateUnitDto) {
-    return this.unitService.create(createUnitDto);
+  async create(@Body() createUnitDto: CreateUnitDto, @Res() res: Response):Promise<any> {
+    const response_data = await this.unitService.create(createUnitDto);
+    return this.successMessageWithData(response_data, 201, res);
   }
 
   @Get()
-  findAll() {
-    return this.unitService.findAll();
+  async findAll(@Res() res: Response, @Req() req: Request):Promise<any> {
+    const response_data = await this.unitService.findAll(req);
+    return this.successMessageWithDataCollection(response_data, 200, res);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.unitService.findOne(+id);
+  async findOne(@Param('id') id: string, @Res() res: Response):Promise<any> {
+    const response_data = await this.unitService.findOne(id);
+    return this.successMessageWithDataCollection(response_data, 200, res);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUnitDto: UpdateUnitDto) {
-    return this.unitService.update(+id, updateUnitDto);
+  async update(@Param('id') id: string, @Body() updateUnitDto: UpdateUnitDto, @Res() res: Response): Promise<any>{
+    const response_data = await  this.unitService.update(id, updateUnitDto);
+    return this.successMessageWithData(response_data, 200, res);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.unitService.remove(+id);
+  async remove(@Param('id') id: string, @Res() res: Response): Promise<any> {
+    await this.unitService.remove(id);
+    return this.successMessage('State deleted', 202, res);
   }
 }

@@ -7,6 +7,7 @@ import {MongooseModule} from "@nestjs/mongoose";
 import { LgaModule } from '@app/poll/lga/lga.module';
 import { WardModule } from '@app/poll/ward/ward.module';
 import { UnitModule } from '@app/poll/unit/unit.module';
+import { AccessTokenModule } from './app/access-control/access-token/access-token.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { UnitModule } from '@app/poll/unit/unit.module';
       LgaModule,
       WardModule,
       UnitModule,
+      AccessTokenModule,
   ],
   controllers: [AppController],
   providers: [AppService],
