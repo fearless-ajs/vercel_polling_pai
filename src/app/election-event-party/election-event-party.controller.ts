@@ -1,7 +1,6 @@
 import {Controller, Get, Post, Body, Patch, Param, Delete, Res, Req} from '@nestjs/common';
 import { ElectionEventPartyService } from './election-event-party.service';
 import { CreateElectionEventPartyDto } from './dto/create-election-event-party.dto';
-import { UpdateElectionEventPartyDto } from './dto/update-election-event-party.dto';
 import ApiResponse from "@/helpers/api_response";
 import {Request, Response} from "express";
 

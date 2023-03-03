@@ -13,6 +13,7 @@ import { ElectionEventModule } from '@app/election-event/election-event.module';
 import { PartyModule } from '@app/party/party.module';
 import { ElectionEventPartyModule } from '@app/election-event-party/election-event-party.module';
 import {MulterModule} from "@nestjs/platform-express";
+import { ElectionEventFeedModule } from './app/election-event-feed/election-event-feed.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import {MulterModule} from "@nestjs/platform-express";
       ElectionEventModule,
       PartyModule,
       ElectionEventPartyModule,
+      ElectionEventFeedModule,
   ],
   controllers: [AppController],
   providers: [AppService],
