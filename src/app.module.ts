@@ -7,7 +7,12 @@ import {MongooseModule} from "@nestjs/mongoose";
 import { LgaModule } from '@app/poll/lga/lga.module';
 import { WardModule } from '@app/poll/ward/ward.module';
 import { UnitModule } from '@app/poll/unit/unit.module';
-import { AccessTokenModule } from './app/access-control/access-token/access-token.module';
+import { AccessTokenModule } from '@app/access-control/access-token/access-token.module';
+import { CandidateModule } from '@app/candidate/candidate.module';
+import { ElectionEventModule } from '@app/election-event/election-event.module';
+import { PartyModule } from '@app/party/party.module';
+import { ElectionEventPartyModule } from '@app/election-event-party/election-event-party.module';
+import {MulterModule} from "@nestjs/platform-express";
 
 @Module({
   imports: [
@@ -21,11 +26,16 @@ import { AccessTokenModule } from './app/access-control/access-token/access-toke
         uri: config.get<string>('MONGODB_URI'), // Loaded from .ENV
       })
     }),
+      MulterModule.register({ dest: './uploads' }),
       StateModule,
       LgaModule,
       WardModule,
       UnitModule,
       AccessTokenModule,
+      CandidateModule,
+      ElectionEventModule,
+      PartyModule,
+      ElectionEventPartyModule,
   ],
   controllers: [AppController],
   providers: [AppService],
