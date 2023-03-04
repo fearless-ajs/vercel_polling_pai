@@ -9,6 +9,7 @@ import {Lga, LgaSchema} from "@app/poll/lga/entities/lga.entity";
   providers: [LgaService],
   imports: [
     MongooseModule.forFeature([{ name: Lga.name, schema: LgaSchema }]),
-  ]
+  ],
+  exports: [LgaService]
 })
 export class LgaModule {}

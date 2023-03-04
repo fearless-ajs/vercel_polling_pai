@@ -1,11 +1,13 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, Res, Req} from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, Res, Req, UseGuards} from '@nestjs/common';
 import { WardService } from './ward.service';
 import { CreateWardDto } from './dto/create-ward.dto';
 import { UpdateWardDto } from './dto/update-ward.dto';
 import ApiResponse from "@/helpers/api_response";
 import {Request, Response} from "express";
+import {AuthGuard} from "@nestjs/passport";
 
 @Controller('wards')
+@UseGuards(AuthGuard('jwt'))
 export class WardController extends ApiResponse{
   constructor(private readonly wardService: WardService) {
     super();

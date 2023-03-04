@@ -9,6 +9,7 @@ import {Unit, UNitSchema} from "@app/poll/unit/entities/unit.entity";
   providers: [UnitService],
   imports: [
     MongooseModule.forFeature([{ name: Unit.name, schema: UNitSchema }]),
-  ]
+  ],
+  exports: [UnitService]
 })
 export class UnitModule {}

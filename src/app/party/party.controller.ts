@@ -9,7 +9,7 @@ import {
   Res,
   UseInterceptors,
   UploadedFile,
-  MaxFileSizeValidator, ParseFilePipe, FileTypeValidator, Req
+  MaxFileSizeValidator, ParseFilePipe, FileTypeValidator, Req, UseGuards
 } from '@nestjs/common';
 import { PartyService } from './party.service';
 import { CreatePartyDto } from './dto/create-party.dto';
@@ -19,8 +19,10 @@ import {Request, Response} from "express";
 import {FileInterceptor} from "@nestjs/platform-express";
 import {diskStorage} from "multer";
 import { extname } from 'path';
+import {AuthGuard} from "@nestjs/passport";
 
 @Controller('parties')
+@UseGuards(AuthGuard('jwt'))
 export class PartyController extends ApiResponse{
   constructor(private readonly partyService: PartyService) {
     super();

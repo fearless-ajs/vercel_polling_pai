@@ -25,21 +25,25 @@ export class CandidateService extends BaseService{
 
     // Check if the partyId is valid
     if (!mongoose.isValidObjectId(party_id)){
+      await deleteFile(image);
       throw new HttpException(`Invalid party id (${party_id})`, HttpStatus.NOT_ACCEPTABLE)
     }
 
    // Check if the election_event Id is valid
    if (!mongoose.isValidObjectId(election_event_id)){
+     await deleteFile(image);
      throw new HttpException(`Invalid election event id (${election_event_id})`, HttpStatus.NOT_ACCEPTABLE)
    }
 
    // Check if the party exists
     if (!await this.partyService.findOne(party_id)){
+      await deleteFile(image);
       throw new HttpException(`Unknown party_id (${party_id})`, HttpStatus.NOT_FOUND)
     }
 
    // Check if the election_event exists
    if (!await this.electionEventService.findOne(election_event_id)){
+     await deleteFile(image);
      throw new HttpException(`Unknown election_event_id (${election_event_id})`, HttpStatus.NOT_FOUND)
    }
 

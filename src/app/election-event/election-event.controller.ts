@@ -1,11 +1,13 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, Res, Req} from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, Res, Req, UseGuards} from '@nestjs/common';
 import { ElectionEventService } from './election-event.service';
 import { CreateElectionEventDto } from './dto/create-election-event.dto';
 import { UpdateElectionEventDto } from './dto/update-election-event.dto';
 import ApiResponse from "@/helpers/api_response";
 import {Request, Response} from "express";
+import {AuthGuard} from "@nestjs/passport";
 
 @Controller('election-events')
+@UseGuards(AuthGuard('jwt'))
 export class ElectionEventController extends ApiResponse{
   constructor(private readonly electionEventService: ElectionEventService) {
     super();

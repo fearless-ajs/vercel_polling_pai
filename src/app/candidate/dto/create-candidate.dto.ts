@@ -13,5 +13,4 @@ export class CreateCandidateDto {
     @IsOptional()
     image: any
 
-
 }

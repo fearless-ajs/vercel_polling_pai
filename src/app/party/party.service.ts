@@ -53,9 +53,11 @@ export class PartyService extends BaseService{
     if (!mongoose.isValidObjectId(id)){
       throw new HttpException(`Invalid party id (${id})`, HttpStatus.NOT_ACCEPTABLE)
     }
-    // Find the election event if i exists
-    if (!await this.findOne(id)){
-      throw new HttpException(`Unknown election event id (${id})`, HttpStatus.NOT_ACCEPTABLE)
+
+    // Find the party exists
+    const party = await this.findOne(id)
+    if (!party){
+      throw new HttpException(`Unknown party id (${id})`, HttpStatus.NOT_ACCEPTABLE)
     }
 
     // Check if name exists
@@ -73,7 +75,9 @@ export class PartyService extends BaseService{
 
     if (updatePartyDto.logo){
       // Delete logo
-      await deleteFile(updatePartyDto.logo);
+      await deleteFile(party.logo);
+    }else {
+      updatePartyDto.logo = party.logo;
     }
 
     return this.partyModel.findOneAndUpdate({id: id}, updatePartyDto, {

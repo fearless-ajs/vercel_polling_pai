@@ -8,7 +8,7 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
-  ParseFilePipe, MaxFileSizeValidator, FileTypeValidator, Res, Req
+  ParseFilePipe, MaxFileSizeValidator, FileTypeValidator, Res, Req, UseGuards
 } from '@nestjs/common';
 import { CandidateService } from './candidate.service';
 import { CreateCandidateDto } from './dto/create-candidate.dto';
@@ -18,8 +18,10 @@ import {diskStorage} from "multer";
 import {extname} from "path";
 import {Request, Response} from "express";
 import ApiResponse from "@/helpers/api_response";
+import {AuthGuard} from "@nestjs/passport";
 
 @Controller('candidates')
+@UseGuards(AuthGuard('jwt'))
 export class CandidateController extends ApiResponse{
   constructor(private readonly candidateService: CandidateService) {
     super();

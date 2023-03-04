@@ -12,5 +12,6 @@ import {State, StateSchema} from "./entities/state.entity";
     MongooseModule.forFeature([{ name: State.name, schema: StateSchema }]),
     HttpModule
   ],
+  exports: [StateService]
 })
 export class StateModule {}

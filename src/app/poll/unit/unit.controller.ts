@@ -1,11 +1,13 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, Res, Req} from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, Res, Req, UseGuards} from '@nestjs/common';
 import { UnitService } from './unit.service';
 import { CreateUnitDto } from './dto/create-unit.dto';
 import { UpdateUnitDto } from './dto/update-unit.dto';
 import ApiResponse from "@/helpers/api_response";
 import {Request, Response} from "express";
+import {AuthGuard} from "@nestjs/passport";
 
 @Controller('units')
+@UseGuards(AuthGuard('jwt'))
 export class UnitController extends ApiResponse{
   constructor(private readonly unitService: UnitService) {
     super();

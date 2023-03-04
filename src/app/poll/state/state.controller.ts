@@ -1,11 +1,13 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, Res, Req} from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, Res, Req, UseGuards} from '@nestjs/common';
 import { StateService } from './state.service';
 import { CreateStateDto } from './dto/create-state.dto';
 import { UpdateStateDto } from './dto/update-state.dto';
 import ApiResponse from "../../../helpers/api_response";
 import {Request, Response} from "express";
+import {AuthGuard} from "@nestjs/passport";
 
 @Controller('states')
+@UseGuards(AuthGuard('jwt'))
 export class StateController extends ApiResponse{
   constructor(private readonly stateService: StateService) {
     super();

@@ -1,11 +1,13 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, Res, Req} from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, Res, Req, UseGuards} from '@nestjs/common';
 import { LgaService } from './lga.service';
 import { CreateLgaDto } from './dto/create-lga.dto';
 import { UpdateLgaDto } from './dto/update-lga.dto';
 import ApiResponse from "@/helpers/api_response";
 import {Request, Response} from "express";
+import {AuthGuard} from "@nestjs/passport";
 
 @Controller('lgas')
+@UseGuards(AuthGuard('jwt'))
 export class LgaController extends ApiResponse{
   constructor(private readonly lgaService: LgaService) {
     super();

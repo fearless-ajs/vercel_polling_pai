@@ -13,7 +13,9 @@ import { ElectionEventModule } from '@app/election-event/election-event.module';
 import { PartyModule } from '@app/party/party.module';
 import { ElectionEventPartyModule } from '@app/election-event-party/election-event-party.module';
 import {MulterModule} from "@nestjs/platform-express";
-import { ElectionEventFeedModule } from './app/election-event-feed/election-event-feed.module';
+import { ElectionEventFeedModule } from '@app/election-event-feed/election-event-feed.module';
+import { UserModule } from '@app/user/user.module';
+import {AuthenticationModule} from "@app/auth/authentication.module";
 
 @Module({
   imports: [
@@ -27,6 +29,7 @@ import { ElectionEventFeedModule } from './app/election-event-feed/election-even
         uri: config.get<string>('MONGODB_URI'), // Loaded from .ENV
       })
     }),
+      AuthenticationModule,
       MulterModule.register({ dest: './uploads' }),
       StateModule,
       LgaModule,
@@ -38,6 +41,7 @@ import { ElectionEventFeedModule } from './app/election-event-feed/election-even
       PartyModule,
       ElectionEventPartyModule,
       ElectionEventFeedModule,
+      UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
