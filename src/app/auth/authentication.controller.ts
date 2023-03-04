@@ -7,6 +7,8 @@ import {ResendTokenDto} from "./dto/resed-token.dto";
 import {RegisterDto} from "./dto/register.dto";
 import {AuthGuard} from "@nestjs/passport";
 import {AccountInfoDto} from "./dto/account-info.dto";
+import {ForgotPasswordDto} from "@app/auth/dto/forgot-password.dto";
+import {ResetPasswordTokenDto} from "@app/auth/dto/reset-password-token.dto";
 
 @Controller('auth')
 export class AuthenticationController extends ApiResponse{
@@ -50,6 +52,19 @@ export class AuthenticationController extends ApiResponse{
   async resendToken(@Body() resendTokenDto: ResendTokenDto, @Res() res: Response) {
     await this.authenticationService.resendToken(resendTokenDto.email);
     return this.successMessage('Token resent.', 200, res);
+  }
+
+  @Post('forgot-password')
+  async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto, @Res() res: Response) {
+    await this.authenticationService.forgotPassword(forgotPasswordDto.email);
+    return this.successMessage('Reset Token resent.', 200, res);
+  }
+
+
+  @Post('reset-password')
+  async resetPassword(@Body() resetPasswordTokenDto: ResetPasswordTokenDto, @Res() res: Response) {
+    await this.authenticationService.resetPassword(resetPasswordTokenDto);
+    return this.successMessage('Password reset successfully.', 200, res);
   }
 
   @Post('register')

@@ -88,6 +88,12 @@ export class UserService extends BaseService{
     return this.userModel.findOne({verificationToken: verificationToken, active: false, verificationStatus: false});
   }
 
+
+
+  async checkUserPasswordToken(verificationToken:string):Promise<User> {
+    return this.userModel.findOne({ passwordResetToken: verificationToken });
+  }
+
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const { username, name, email, country, mobile_number, image, password } = updateUserDto;
 
