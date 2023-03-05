@@ -1,0 +1,10 @@
+extends baseEmail
+
+block content
+  p Hi #{payload.user.name},
+  p Congratulations, we're glad you got this far 🎉🙏
+  p You account email has been fully verified and activated, please proceed with login in.
+
+
+  p If you need any help with registering on #{payload.appInfo.name}, please don't hesitate to contact us!
+  p - #{payload.appInfo.email}, #{payload.appInfo.name}

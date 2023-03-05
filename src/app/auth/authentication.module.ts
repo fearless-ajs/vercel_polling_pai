@@ -9,6 +9,7 @@ import {jwtConstants} from "./auth.constant";
 import {JwtStrategy} from "./strategy/jwt.strategy";
 import {ConfigModule, ConfigService} from "@nestjs/config";
 import {HttpModule} from "@nestjs/axios";
+import {MailingModule} from "@/providers/mailing/mailing.module";
 
 
 @Module({
@@ -25,6 +26,7 @@ import {HttpModule} from "@nestjs/axios";
       }),
       UserModule,
       PassportModule,
+      MailingModule,
       JwtModule.register({
           secret: jwtConstants.secret,
           signOptions: { expiresIn: '30d' },

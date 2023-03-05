@@ -9,6 +9,8 @@ import {ConfigService} from "@nestjs/config";
 import {HttpService} from "@nestjs/axios";
 import {randomInt} from "crypto";
 import {ResetPasswordTokenDto} from "@app/auth/dto/reset-password-token.dto";
+import {MailingService} from "@/providers/mailing/mailing.service";
+import config from "@config/config";
 
 @Injectable()
 export class AuthenticationService {
@@ -18,6 +20,7 @@ export class AuthenticationService {
         private userService: UserService,
         private jwtService: JwtService,
         private configService: ConfigService,
+        private mailingService: MailingService
     ) {}
 
     async validateUser(username: string, password: string) {
@@ -71,6 +74,19 @@ export class AuthenticationService {
             throw new HttpException('User verified already', HttpStatus.NOT_ACCEPTABLE);
         }
 
+        await this.mailingService.sendWelcomeMessage(email, config.email, `${config.appName} activation token`, {
+            user: {
+                name: user.name,
+                email: user.email,
+                token: user.verificationToken
+            },
+            appInfo: {
+                name: config.appName,
+                email: config.email,
+                companyName: config.companyName
+            }
+        })
+
         // Send the token to the user email
         //
         // .
@@ -85,10 +101,6 @@ export class AuthenticationService {
             throw new HttpException('User not found', HttpStatus.NOT_FOUND);
         }
 
-        if (user.verificationStatus){
-            throw new HttpException('User verified already', HttpStatus.NOT_ACCEPTABLE);
-        }
-
         // create a token
         const code = randomInt(10000000, 999999999);
 
@@ -99,6 +111,18 @@ export class AuthenticationService {
 
 
         // Send the token to the user email
+        this.mailingService.sendForgotPasswordMessage(user.email, config.email, `${config.appName} Password reset token`, {
+            user: {
+                name: user.name,
+                email: user.email,
+                token: code
+            },
+            appInfo: {
+                name: config.appName,
+                email: config.email,
+                companyName: config.companyName
+            }
+        })
 
         return true;
     }
@@ -117,12 +141,27 @@ export class AuthenticationService {
         const hash = await bcrypt.hash(new_password, 10);
 
         // @ts-ignore
-      return  await  this.userService.findOneByIdAndUpdate(user._id, {
+      const updated_user = await  this.userService.findOneByIdAndUpdate(user._id, {
             password: hash,
             passwordResetToken: null,
             passwordChangedAt: Date.now()
         });
 
+
+        // Send the token to the user email
+        await this.mailingService.sendPasswordUpdatedMessage(user.email, config.email, `${config.appName} Password updated`, {
+            user: {
+                name: user.name,
+                email: user.email,
+            },
+            appInfo: {
+                name: config.appName,
+                email: config.email,
+                companyName: config.companyName
+            }
+        })
+
+        return true;
 
     }
 
@@ -136,16 +175,27 @@ export class AuthenticationService {
         }
 
 
-        // Create a user for the tenant.
-
         // @ts-ignore
-        return await this.userService.findOneByIdAndUpdate(user._id, {
+        const user_datails =  await this.userService.findOneByIdAndUpdate(user._id, {
             verificationStatus: true,
             verificationToken: null,
             verifiedAt: Date.now(),
             updatedAt: Date.now()
         });
 
+        this.mailingService.sendAccountVerificationMessage(user.email, config.email, `${config.appName} account verified`, {
+            user: {
+                name: user.name,
+                email: user.email,
+            },
+            appInfo: {
+                name: config.appName,
+                email: config.email,
+                companyName: config.companyName
+            }
+        })
+
+        return user_datails
     }
 
 

@@ -16,6 +16,9 @@ import {MulterModule} from "@nestjs/platform-express";
 import { ElectionEventFeedModule } from '@app/election-event-feed/election-event-feed.module';
 import { UserModule } from '@app/user/user.module';
 import {AuthenticationModule} from "@app/auth/authentication.module";
+import {MailerModule} from "@nestjs-modules/mailer";
+import { MailingModule } from './providers/mailing/mailing.module';
+import {PugAdapter} from "@nestjs-modules/mailer/dist/adapters/pug.adapter";
 
 @Module({
   imports: [
@@ -28,6 +31,23 @@ import {AuthenticationModule} from "@app/auth/authentication.module";
       useFactory: async (config: ConfigService) => ({
         uri: config.get<string>('MONGODB_URI'), // Loaded from .ENV
       })
+    }),
+    MailerModule.forRoot({
+      transport: {
+        host: 'sandbox.smtp.mailtrap.io',
+        auth: {
+          user: '81806e976d160d',
+          pass: '9a6c8b101cdbd6'
+        },
+        port: 2525
+      },
+      template: {
+        dir: __dirname + '/mails',
+        adapter: new PugAdapter(),
+        options: {
+          strict: true,
+        },
+      }
     }),
       AuthenticationModule,
       MulterModule.register({ dest: './uploads' }),
@@ -42,6 +62,7 @@ import {AuthenticationModule} from "@app/auth/authentication.module";
       ElectionEventPartyModule,
       ElectionEventFeedModule,
       UserModule,
+      MailingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

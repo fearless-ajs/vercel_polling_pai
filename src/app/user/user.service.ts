@@ -10,10 +10,15 @@ import {Request, Response} from "express";
 import {deleteFile} from "@/helpers/file-processor";
 import BaseService from "@/helpers/base-service";
 import {Party} from "@app/party/entities/party.entity";
+import {MailingService} from "@/providers/mailing/mailing.service";
+import config from "@config/config";
 
 @Injectable()
 export class UserService extends BaseService{
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {
+  constructor(
+      @InjectModel(User.name) private userModel: Model<UserDocument>,
+      private mailingService: MailingService
+  ) {
     super();
   }
 
@@ -37,8 +42,11 @@ export class UserService extends BaseService{
       throw new HttpException(`Username exists`, HttpStatus.CONFLICT)
     }
 
-    console.log(hash);
-    // Send verification code as sms to user phone number
+    // console.log(hash);
+    // Send verification code as sms to user email
+    // await this.mailingService.sendPlainTextEmail('adurotimijoshua@gmail.com', 'mail@telvida.com', 'Testin email', 'Welcomdear')
+
+
     const user = new this.userModel({
       username,
       name,
@@ -50,7 +58,23 @@ export class UserService extends BaseService{
       verificationToken: code
     });
 
-    return user.save();
+    const userDetails =  user.save();
+
+    this.mailingService.sendWelcomeMessage(email, config.email, `Welcome to ${config.appName}`, {
+      user: {
+        username,
+        name,
+        email,
+        token: code
+      },
+      appInfo: {
+        name: config.appName,
+        email: config.email,
+        companyName: config.companyName
+      }
+    })
+
+    return userDetails
   }
 
   async findAll(req: Request): Promise<Party[]> {
@@ -70,7 +94,7 @@ export class UserService extends BaseService{
 
 
   async findOneByEmail(email: string): Promise<User> {
-    return this.userModel.findOne({ email }).select('+pin');
+    return this.userModel.findOne({ email }).select('+pin, +verificationToken');
   }
 
   async findOneByUsername(username: string): Promise<User> {
