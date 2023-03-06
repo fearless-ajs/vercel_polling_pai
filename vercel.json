@@ -1,13 +1,5 @@
 {
   "version": 2,
-  "env": {
-    "MONGO_URI": "@shop_api_mongo_uri",
-    "MONGODB_URI":"mongodb+srv://nancytec:olamigoke1995@cluster0.wmyus.mongodb.net/polls_collation",
-    "PORT":5000,
-    "APP_NAME":"LP_COLLATION",
-    "HTTP_TIMEOUT":5000,
-    "HTTP_MAX_REDIRECTS":10
-  },
   "builds": [
     {
       "src": "src/main.ts",
