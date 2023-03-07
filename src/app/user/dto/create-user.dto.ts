@@ -35,7 +35,7 @@ export class CreateUserDto {
     @IsNotEmpty() @IsEmail()  @MaxLength(100)
     email: string
 
-    @IsNotEmpty() @IsString()  @MaxLength(100)
+    @IsOptional() @IsString()  @MaxLength(100)
     country: string;
 
     @IsNotEmpty() @IsMobilePhone()  @MaxLength(100)
@@ -50,10 +50,10 @@ export class CreateUserDto {
     @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {message: 'password too weak'})
     password: string;
 
-    @IsNotEmpty() @IsString()  @MaxLength(100)
-    @Match('password', {
-        message: "Password must match"
-    })
-    password_confirmation: string;
+    // @IsNotEmpty() @IsString()  @MaxLength(100)
+    // @Match('password', {
+    //     message: "Password must match"
+    // })
+    // password_confirmation: string;
 
 }

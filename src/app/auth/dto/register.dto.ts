@@ -50,7 +50,7 @@ export class RegisterDto {
     @IsNotEmpty() @IsEmail()  @MaxLength(100)
     email: string
 
-    @IsNotEmpty() @IsString()  @MaxLength(100)
+    @IsOptional() @IsString()  @MaxLength(100)
     country: string;
 
     @IsNotEmpty() @IsMobilePhone()  @MaxLength(100)
@@ -64,10 +64,4 @@ export class RegisterDto {
     @MaxLength(100)
     @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {message: 'password too weak'})
     password: string;
-
-    @IsNotEmpty() @IsString()  @MaxLength(100)
-    @Match('password', {
-        message: "Password must match"
-    })
-    password_confirmation: string;
 }
