@@ -98,7 +98,7 @@ export class UserService extends BaseService{
   }
 
   async findOneByUsername(username: string): Promise<User> {
-    return this.userModel.findOne({ username }).select('+pin');
+    return this.userModel.findOne({ username }).select('+password');
   }
 
 
