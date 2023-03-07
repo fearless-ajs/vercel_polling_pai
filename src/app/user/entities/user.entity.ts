@@ -34,7 +34,9 @@ export class User {
     image: string
 
 
-    @Prop()
+    @Prop({
+        select: false
+    })
     @Exclude()
     password: string;
 
