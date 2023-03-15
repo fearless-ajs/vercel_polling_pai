@@ -61,7 +61,7 @@ import {PugAdapter} from "@nestjs-modules/mailer/dist/adapters/pug.adapter";
       PartyModule,
       ElectionEventPartyModule,
       ElectionEventFeedModule,
-      UserModule,
+
       MailingModule,
   ],
   controllers: [AppController],
